@@ -16,27 +16,25 @@ model = pickle.load(open("RF_model.pkl", "rb"))
 scaler = pickle.load(open("scalar.pkl", "rb"))
 
 # ------------------ Background Image ------------------
-def add_bg_from_local(image_file):
-    with open(image_file, "rb") as image_file:
-        encoded_string = base64.b64encode(image_file.read()).decode()
-    st.markdown(
-        f"""
-        <style>
-        .stApp {{
-            background-image: url("data:image/png;base64,{encoded_string}");
-            background-size: cover;
-            background-attachment: fixed;
-        }}
-        </style>
-        """,
-        unsafe_allow_html=True
-    )
+st.set_page_config(layout="wide")
 
-# Prefer 'bgg.jpg' if present, otherwise fall back to existing 'bg.jpg'
-bg_candidate = "assests/bgg.jpg"
-bg_fallback = "assests/bg.jpg"
-bg_path = bg_candidate if os.path.exists(bg_candidate) else bg_fallback
-add_bg_from_local(bg_path)
+bg_image_url = "https://images.pexels.com/photos/14158915/pexels-photo-14158915.jpeg"
+
+st.markdown(
+    f"""
+    <style>
+    .stApp {{
+        background-image: url("{bg_image_url}");
+        background-size: cover;
+        background-position: center;
+        background-attachment: fixed;
+    }}
+    </style>
+    """,
+    unsafe_allow_html=True
+)
+
+
 
 # Add custom CSS for better visibility
 st.markdown("""
@@ -162,7 +160,7 @@ platform = st.selectbox("🌐 Most Used Platform", ["Facebook", "Instagram", "Ka
 academic_impact = st.selectbox("📊 Affects Academic Performance", ["No", "Yes"])
 sleep_hours = st.slider("😴 Sleep Hours per Night", 3, 10, 7)
 mental_health = st.slider("🧠 Mental Health Score (1–10)", 1, 10, 5)
-relationship = st.selectbox("💑 Relationship Status", ["Single", "In Relationship", "Complicated"])
+relationship = st.selectbox("💑 Relationship Status", ["Single", "In Relationship"])
 conflicts = st.slider("⚠️ Conflicts Over Social Media (1–5)", 1, 5, 2)
 
 # Encoding using LabelEncoder logic (alphabetical order)
