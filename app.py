@@ -187,23 +187,26 @@ relationship_map = {"Complicated": 0, "In Relationship": 1, "Single": 2}
 relationship_encoded = relationship_map[relationship]
 
 # ------------------ Prediction Button ------------------
-col_button_left, col_button_center, col_button_right = st.columns([1, 1, 1])
-with col_button_center:
-    if st.button("🔍 Predict Addiction Level", use_container_width=True):
-        input_data = np.array([[age, gender_encoded, academic_level_encoded, country_encoded,
-                                 daily_usage, platform_encoded, academic_impact_encoded,
-                                 sleep_hours, mental_health, relationship_encoded, conflicts]])
+# ------------------ Prediction Button ------------------
+st.markdown("<div style='display:flex; justify-content:center;'>", unsafe_allow_html=True)
 
-        input_scaled = scaler.transform(input_data)
-        prediction = model.predict(input_scaled)[0]
+if st.button("🔍 Predict Addiction Level"):
+    input_data = np.array([[age, gender_encoded, academic_level_encoded, country_encoded,
+                             daily_usage, platform_encoded, academic_impact_encoded,
+                             sleep_hours, mental_health, relationship_encoded, conflicts]])
 
-        st.markdown("---")
+    input_scaled = scaler.transform(input_data)
+    prediction = model.predict(input_scaled)[0]
+
+    st.markdown("---")
+    st.markdown("</div>", unsafe_allow_html=True)
+
 
         # ------------------ RESULT DISPLAY ------------------
         # make center column wider so the result box can expand
-        result_col1, result_col2, result_col3 = st.columns([1, 6, 1])
+    result_col1, result_col2, result_col3 = st.columns([1, 6, 1])
         
-        with result_col2:
+    with result_col2:
             if prediction < 4:
                 st.success("✅ LOW ADDICTION LEVEL")
                 # Celebration: balloons and congratulatory banner
