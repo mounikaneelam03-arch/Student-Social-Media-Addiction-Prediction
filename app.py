@@ -8,7 +8,8 @@ import os
 st.set_page_config(
     page_title="Student Social Media Addiction Predictor",
     page_icon="📱",
-    layout="wide"
+    layout="wide", 
+    
 )
 
 # ------------------ Load Model ------------------
@@ -18,7 +19,7 @@ scaler = pickle.load(open("scalar.pkl", "rb"))
 # ------------------ Background Image ------------------
 st.set_page_config(layout="wide")
 
-bg_image_url = "https://images.pexels.com/photos/14158915/pexels-photo-14158915.jpeg"
+bg_image_url = "https://images.zwierciadlo.pl/_resource/res/path/0c/88/0c889bf4-1755-4ca3-b441-27ad2f253e4d"
 
 st.markdown(
     f"""
@@ -141,8 +142,8 @@ label {
 st.markdown("""
 <div style='text-align:center;'>
     <span class='header-emoji'>📱</span>
-    <span class='title-text'><h1 style='display:inline-block; color:white; text-shadow:2px 2px black; margin:0;'>Student Social Media Addiction Predictor</h1></span>
-    <p class='subtitle' style='color:white; font-size:20px; margin-top:8px;'>AI-powered system to analyze addiction risk — get personalized tips ✨</p>
+    <span class='title-text'><h1 style='display:inline-block; color:black; text-shadow:2px 2px black; margin:0;'>Student Social Media Addiction Predictor</h1></span>
+    <p class='subtitle' style='color:black; font-size:20px; margin-top:8px;'>AI-powered system to analyze addiction risk — get personalized tips ✨</p>
 </div>
 """, unsafe_allow_html=True)
 
