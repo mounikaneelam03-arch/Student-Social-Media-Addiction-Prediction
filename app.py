@@ -3,6 +3,7 @@ import pickle
 import numpy as np
 import base64
 import os
+import time
 
 # ------------------ Page Configuration ------------------
 st.set_page_config(
@@ -232,16 +233,11 @@ with col_button_center:
         # Display result directly without empty side columns
         if prediction < 4:
             # Celebration: balloons and congratulatory banner
-            try:
-                st.balloons()
-            except Exception:
-                pass
-
             st.markdown(f"""
             <div class='result-banner' style='max-width:100%; width:100%; min-height:260px; margin:18px auto; background: linear-gradient(135deg, #a1c4fd 0%, #c2e9fb 50%, #d4a5ff 100%); padding: 32px; border-radius: 18px; text-align: center; box-shadow: 0 18px 36px rgba(0,0,0,0.45); display:flex; flex-direction:column; justify-content:center; align-items:center;'>
                 <div class='result-deco'><span class='float-emoji'>🌱✅😊🎈🎉       </span></div>
                 <div style='background: rgba(255,255,255,0.25); padding: 8px 20px; border-radius: 20px; margin-bottom: 12px; display: inline-block;'>
-                    <h3 style='color: #00ff00; margin: 0; font-size: 24px; font-weight: 700;'>✅ LOW ADDICTION LEVEL</h3>
+                    <h3 style='color: #green; margin: 0; font-size: 24px; font-weight: 700;'>✅ LOW ADDICTION LEVEL</h3>
                 </div>
                 <h1 style='color: #fff; margin: 0; font-size: 48px; font-weight: 800;'>🎉 Congratulations!</h1>
                 <p style='color: #f0f5ff; margin: 8px 0 12px 0; font-size: 18px;'>You have a LOW addiction level</p>
@@ -260,6 +256,9 @@ with col_button_center:
             if os.path.exists("assests/animation.gif"):
                 st.image("assests/animation.gif", width=700)
 
+            time.sleep(0.8)
+            st.balloons()
+
         elif prediction < 7:
             st.markdown(f"""
             <div class='result-banner' style='max-width:100%; width:100%; min-height:260px; margin:18px auto; background: linear-gradient(135deg, #fff1eb 0%, #ace0f9 50%, #fbc2eb 100%); padding: 30px; border-radius: 18px; text-align: center; box-shadow: 0 16px 32px rgba(0,0,0,0.3); display:flex; flex-direction:column; justify-content:center; align-items:center;'>
@@ -269,7 +268,7 @@ with col_button_center:
                 </div>
                 <h1 style='color: #8a6d3b; margin: 0; font-size: 42px; font-weight: 700;'>⚠️ Keep an Eye on Usage</h1>
                 <p style='color: #6b4f2f; margin: 8px 0 12px 0; font-size: 16px;'>Moderate addiction level — consider reducing screen time</p>
-                <h2 style='color: #ffd700; margin: 6px 0 0 0; font-size: 48px; font-weight: 800;'>{prediction:.2f}</h2>
+                <h2 style='color: #yellow; margin: 6px 0 0 0; font-size: 48px; font-weight: 800;'>{prediction:.2f}</h2>
                 <p style='color: #6b4f2f; margin: 6px 0 0 0; font-size: 14px;'>Addiction Score</p>
                 <ul style='text-align:left; color:#6b4f2f; margin:12px 0 0 0; padding-left:22px; font-size:15px;'>
                     <li>📵 Try scheduled no-phone periods (study/meal times)</li>
