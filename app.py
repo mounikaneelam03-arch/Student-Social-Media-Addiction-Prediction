@@ -159,13 +159,13 @@ label {{
 
 .result-banner {{ position: relative; }}
 
-/* Make the default Streamlit alert boxes softer & wider */
+/* Soften the default Streamlit alert boxes (st.success, st.warning, st.error) */
 .stAlert {{
     border-radius: 14px !important;
-    padding: 1rem 1.5rem !important;
+    padding: 0.6rem 1rem !important;
     margin-top: 0.5rem !important;
-    background: rgba(255, 255, 255, 0.18) !important;
-    backdrop-filter: blur(10px);
+    background: rgba(0, 0, 0, 0.45) !important;
+    backdrop-filter: blur(8px);
 }}
 
 </style>
@@ -233,82 +233,79 @@ with col_button_center:
         st.markdown("---")
 
         # ------------------ RESULT DISPLAY ------------------
-        # make center column much wider so the result box can expand
-        result_col1, result_col2, result_col3 = st.columns([0.1, 3.8, 0.1])
-        
-        with result_col2:
-            if prediction < 4:
-                st.success("✅ LOW ADDICTION LEVEL")
-                # Celebration: balloons and congratulatory banner
-                try:
-                    st.balloons()
-                except Exception:
-                    pass
+        # Display result directly without empty side columns
+        if prediction < 4:
+            st.success("✅ LOW ADDICTION LEVEL")
+            # Celebration: balloons and congratulatory banner
+            try:
+                st.balloons()
+            except Exception:
+                pass
 
-                st.markdown(f"""
-                <div class='result-banner' style='max-width:100%; width:100%; min-height:260px; margin:18px auto; background: linear-gradient(135deg, #a1c4fd 0%, #c2e9fb 50%, #d4a5ff 100%); padding: 32px; border-radius: 18px; text-align: center; box-shadow: 0 18px 36px rgba(0,0,0,0.45); display:flex; flex-direction:column; justify-content:center; align-items:center;'>
-                    <div class='result-deco'><span class='float-emoji'>🌱✅😊🎈🎉</span></div>
-                    <h1 style='color: #fff; margin: 0; font-size: 48px; font-weight: 800;'>🎉 Congratulations!</h1>
-                    <p style='color: #f0f5ff; margin: 8px 0 12px 0; font-size: 18px;'>You have a LOW addiction level</p>
-                    <h2 style='color: white; margin: 6px 0 0 0; font-size: 56px; font-weight: 900;'>{prediction:.2f}</h2>
-                    <p style='color: #e0e0e0; margin: 6px 0 6px 0; font-size: 14px;'>Addiction Score</p>
-                    <ul style='text-align:left; color:#f0f5ff; margin:12px 0 0 0; padding-left:22px; font-size:15px;'>
-                        <li>🎯📚 Focus on your studies and personal goals</li>
-                        <li>🛌 Prioritize sleep — aim for consistent hours</li>
-                        <li>⏱️ Set small daily screen-time limits</li>
-                        <li>💬 Keep social time balanced with offline activities</li>
-                    </ul>
-                </div>
-                """, unsafe_allow_html=True)
+            st.markdown(f"""
+            <div class='result-banner' style='max-width:100%; width:100%; min-height:260px; margin:18px auto; background: linear-gradient(135deg, #a1c4fd 0%, #c2e9fb 50%, #d4a5ff 100%); padding: 32px; border-radius: 18px; text-align: center; box-shadow: 0 18px 36px rgba(0,0,0,0.45); display:flex; flex-direction:column; justify-content:center; align-items:center;'>
+                <div class='result-deco'><span class='float-emoji'>🌱✅😊🎈🎉</span></div>
+                <h1 style='color: #fff; margin: 0; font-size: 48px; font-weight: 800;'>🎉 Congratulations!</h1>
+                <p style='color: #f0f5ff; margin: 8px 0 12px 0; font-size: 18px;'>You have a LOW addiction level</p>
+                <h2 style='color: white; margin: 6px 0 0 0; font-size: 56px; font-weight: 900;'>{prediction:.2f}</h2>
+                <p style='color: #e0e0e0; margin: 6px 0 6px 0; font-size: 14px;'>Addiction Score</p>
+                <ul style='text-align:left; color:#f0f5ff; margin:12px 0 0 0; padding-left:22px; font-size:15px;'>
+                    <li>🎯📚 Focus on your studies and personal goals</li>
+                    <li>🛌 Prioritize sleep — aim for consistent hours</li>
+                    <li>⏱️ Set small daily screen-time limits</li>
+                    <li>💬 Keep social time balanced with offline activities</li>
+                </ul>
+            </div>
+            """, unsafe_allow_html=True)
 
-                # Optional celebration animation if available
-                if os.path.exists("assests/animation.gif"):
-                    st.image("assests/animation.gif", width=700)
+            # Optional celebration animation if available
+            if os.path.exists("assests/animation.gif"):
+                st.image("assests/animation.gif", width=700)
 
-            elif prediction < 7:
-                st.warning("⚠️ MODERATE ADDICTION LEVEL")
-                st.markdown(f"""
-                <div class='result-banner' style='max-width:100%; width:100%; min-height:260px; margin:18px auto; background: linear-gradient(135deg, #fff1eb 0%, #ace0f9 50%, #fbc2eb 100%); padding: 30px; border-radius: 18px; text-align: center; box-shadow: 0 16px 32px rgba(0,0,0,0.3); display:flex; flex-direction:column; justify-content:center; align-items:center;'>
-                    <div class='result-deco' style='right:auto; left:18px;'><span class='pulse-emoji'>📵🔔⏳🧠⚠️</span></div>
-                    <h1 style='color: #8a6d3b; margin: 0; font-size: 42px; font-weight: 700;'>⚠️ Keep an Eye on Usage</h1>
-                    <p style='color: #6b4f2f; margin: 8px 0 12px 0; font-size: 16px;'>Moderate addiction level — consider reducing screen time</p>
-                    <h2 style='color: #5a3e1b; margin: 6px 0 0 0; font-size: 48px; font-weight: 800;'>{prediction:.2f}</h2>
-                    <p style='color: #6b4f2f; margin: 6px 0 0 0; font-size: 14px;'>Addiction Score</p>
-                    <ul style='text-align:left; color:#6b4f2f; margin:12px 0 0 0; padding-left:22px; font-size:15px;'>
-                        <li>📵 Try scheduled no-phone periods (study/meal times)</li>
-                        <li>⏲️ Use app timers or screen-time controls</li>
-                        <li>🏃 Add short physical breaks and hobbies</li>
-                        <li>📝 Track usage for a week to spot patterns</li>
-                    </ul>
-                </div>
-                """, unsafe_allow_html=True)
+        elif prediction < 7:
+            st.warning("⚠️ MODERATE ADDICTION LEVEL")
+            st.markdown(f"""
+            <div class='result-banner' style='max-width:100%; width:100%; min-height:260px; margin:18px auto; background: linear-gradient(135deg, #fff1eb 0%, #ace0f9 50%, #fbc2eb 100%); padding: 30px; border-radius: 18px; text-align: center; box-shadow: 0 16px 32px rgba(0,0,0,0.3); display:flex; flex-direction:column; justify-content:center; align-items:center;'>
+                <div class='result-deco' style='right:auto; left:18px;'><span class='pulse-emoji'>📵🔔⏳🧠⚠️</span></div>
+                <h1 style='color: #8a6d3b; margin: 0; font-size: 42px; font-weight: 700;'>⚠️ Keep an Eye on Usage</h1>
+                <p style='color: #6b4f2f; margin: 8px 0 12px 0; font-size: 16px;'>Moderate addiction level — consider reducing screen time</p>
+                <h2 style='color: #5a3e1b; margin: 6px 0 0 0; font-size: 48px; font-weight: 800;'>{prediction:.2f}</h2>
+                <p style='color: #6b4f2f; margin: 6px 0 0 0; font-size: 14px;'>Addiction Score</p>
+                <ul style='text-align:left; color:#6b4f2f; margin:12px 0 0 0; padding-left:22px; font-size:15px;'>
+                    <li>📵 Try scheduled no-phone periods (study/meal times)</li>
+                    <li>⏲️ Use app timers or screen-time controls</li>
+                    <li>🏃 Add short physical breaks and hobbies</li>
+                    <li>📝 Track usage for a week to spot patterns</li>
+                </ul>
+            </div>
+            """, unsafe_allow_html=True)
 
-                # subtle caution animation if available
-                if os.path.exists("assests/animation.gif"):
-                    st.image("assests/animation.gif", width=600)
+            # subtle caution animation if available
+            if os.path.exists("assests/animation.gif"):
+                st.image("assests/animation.gif", width=600)
 
-            else:
-                st.error("🚨 HIGH ADDICTION ALERT!")
-                st.markdown(f"""
-                <div class='result-banner' style='max-width:100%; width:100%; min-height:260px; margin:18px auto; background: linear-gradient(135deg, #ff4b2b 0%, #ff0000 35%, #b31217 100%); padding: 30px; border-radius: 18px; text-align: center; box-shadow: 0 18px 40px rgba(0,0,0,0.55); display:flex; flex-direction:column; justify-content:center; align-items:center;'>
-                    <div class='result-deco'><span class='shake-emoji'>🚨📵☠️🚨❗</span></div>
-                    <h1 style='color: #fff; margin: 0; font-size: 44px; font-weight: 800;'>🚨 High Addiction — Take Action</h1>
-                    <p style='color: #fdecea; margin: 8px 0 12px 0; font-size: 16px;'>This indicates a high addiction score — consider seeking support and setting strict limits.</p>
-                    <h2 style='color: #fff; margin: 6px 0 0 0; font-size: 48px; font-weight: 800;'>{prediction:.2f}</h2>
-                    <p style='color: #ffe6e0; margin: 6px 0 0 0; font-size: 14px;'>Addiction Score</p>
-                    <ul style='text-align:left; color:#fff; margin:12px 0 0 0; padding-left:22px; font-size:15px;'>
-                        <li>📞 Consider speaking with a counselor or healthcare professional</li>
-                        <li>🔒 Use app blockers and strict screen-time limits</li>
-                        <li>🧑‍⚕️ Spend more time with family and friends</li>
-                        <li>📆 Create a gradual reduction plan with clear goals</li>
-                        <li>📵 Avoid using your phone before sleeping</li>
-                    </ul>
-                </div>
-                """, unsafe_allow_html=True)
+        else:
+            st.error("🚨 HIGH ADDICTION ALERT!")
+            st.markdown(f"""
+            <div class='result-banner' style='max-width:100%; width:100%; min-height:260px; margin:18px auto; background: linear-gradient(135deg, #ff4b2b 0%, #ff0000 35%, #b31217 100%); padding: 30px; border-radius: 18px; text-align: center; box-shadow: 0 18px 40px rgba(0,0,0,0.55); display:flex; flex-direction:column; justify-content:center; align-items:center;'>
+                <div class='result-deco'><span class='shake-emoji'>🚨📵☠️🚨❗</span></div>
+                <h1 style='color: #fff; margin: 0; font-size: 44px; font-weight: 800;'>🚨 High Addiction — Take Action</h1>
+                <p style='color: #fdecea; margin: 8px 0 12px 0; font-size: 16px;'>This indicates a high addiction score — consider seeking support and setting strict limits.</p>
+                <h2 style='color: #fff; margin: 6px 0 0 0; font-size: 48px; font-weight: 800;'>{prediction:.2f}</h2>
+                <p style='color: #ffe6e0; margin: 6px 0 0 0; font-size: 14px;'>Addiction Score</p>
+                <ul style='text-align:left; color:#fff; margin:12px 0 0 0; padding-left:22px; font-size:15px;'>
+                    <li>📞 Consider speaking with a counselor or healthcare professional</li>
+                    <li>🔒 Use app blockers and strict screen-time limits</li>
+                    <li>🧑‍⚕️ Spend more time with family and friends</li>
+                    <li>📆 Create a gradual reduction plan with clear goals</li>
+                    <li>📵 Avoid using your phone before sleeping</li>
+                </ul>
+            </div>
+            """, unsafe_allow_html=True)
 
-                # show a stronger visual hint if a danger image exists
-                if os.path.exists("assests/image.jpg"):
-                    st.image("assests/image.jpg", width=700)
+            # show a stronger visual hint if a danger image exists
+            if os.path.exists("assests/image.jpg"):
+                st.image("assests/image.jpg", width=700)
 
 # ------------------ Footer ------------------
 st.markdown("""
