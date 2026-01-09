@@ -157,67 +157,7 @@ label {{
     position: absolute; top: -18px; right: 18px; z-index: 10;
 }}
 
-.result-banner {{ 
-    position: relative;
-}}
-
-/* Responsive design for mobile devices */
-@media screen and (max-width: 768px) {{
-    .result-banner {{
-        max-width: 100% !important;
-        width: calc(100% - 2rem) !important;
-        margin: 12px auto !important;
-        padding: 20px 16px !important;
-        min-height: auto !important;
-        box-sizing: border-box !important;
-    }}
-    
-    .result-banner h1 {{
-        font-size: 28px !important;
-        margin: 4px 0 !important;
-    }}
-    
-    .result-banner h2 {{
-        font-size: 32px !important;
-        margin: 4px 0 !important;
-    }}
-    
-    .result-banner h3 {{
-        font-size: 16px !important;
-        padding: 6px 14px !important;
-    }}
-    
-    .result-banner p {{
-        font-size: 13px !important;
-        margin: 6px 0 !important;
-    }}
-    
-    .result-banner ul {{
-        font-size: 12px !important;
-        padding-left: 16px !important;
-        margin: 10px 0 !important;
-    }}
-    
-    .result-banner li {{
-        margin-bottom: 6px !important;
-        line-height: 1.4 !important;
-    }}
-    
-    .result-deco {{
-        top: -10px !important;
-        right: 10px !important;
-    }}
-    
-    .float-emoji, .pulse-emoji, .shake-emoji {{
-        font-size: 20px !important;
-    }}
-    
-    /* Adjust block container padding on mobile */
-    .block-container {{
-        padding-left: 1rem !important;
-        padding-right: 1rem !important;
-    }}
-}}
+.result-banner {{ position: relative; }}
 
 /* Hide the default Streamlit alert boxes completely to avoid empty boxes */
 .stAlert {{
@@ -298,7 +238,7 @@ with col_button_center:
                 pass
 
             st.markdown(f"""
-            <div class='result-banner' style='max-width:1600px; width:100%; min-height:260px; margin:18px auto; background: linear-gradient(135deg, #a1c4fd 0%, #c2e9fb 50%, #d4a5ff 100%); padding: 32px; border-radius: 18px; text-align: center; box-shadow: 0 18px 36px rgba(0,0,0,0.45); display:flex; flex-direction:column; justify-content:center; align-items:center;'>
+            <div class='result-banner' style='max-width:100%; width:100%; min-height:260px; margin:18px auto; background: linear-gradient(135deg, #a1c4fd 0%, #c2e9fb 50%, #d4a5ff 100%); padding: 32px; border-radius: 18px; text-align: center; box-shadow: 0 18px 36px rgba(0,0,0,0.45); display:flex; flex-direction:column; justify-content:center; align-items:center;'>
                 <div class='result-deco'><span class='float-emoji'>🌱✅😊🎈🎉       </span></div>
                 <div style='background: rgba(255,255,255,0.25); padding: 8px 20px; border-radius: 20px; margin-bottom: 12px; display: inline-block;'>
                     <h3 style='color: #00ff00; margin: 0; font-size: 24px; font-weight: 700;'>✅ LOW ADDICTION LEVEL</h3>
@@ -316,10 +256,13 @@ with col_button_center:
             </div>
             """, unsafe_allow_html=True)
 
+            # Optional celebration animation if available
+            if os.path.exists("assests/animation.gif"):
+                st.image("assests/animation.gif", width=700)
 
         elif prediction < 7:
             st.markdown(f"""
-            <div class='result-banner' style='max-width:1600px; width:100%; min-height:260px; margin:18px auto; background: linear-gradient(135deg, #fff1eb 0%, #ace0f9 50%, #fbc2eb 100%); padding: 30px; border-radius: 18px; text-align: center; box-shadow: 0 16px 32px rgba(0,0,0,0.3); display:flex; flex-direction:column; justify-content:center; align-items:center;'>
+            <div class='result-banner' style='max-width:100%; width:100%; min-height:260px; margin:18px auto; background: linear-gradient(135deg, #fff1eb 0%, #ace0f9 50%, #fbc2eb 100%); padding: 30px; border-radius: 18px; text-align: center; box-shadow: 0 16px 32px rgba(0,0,0,0.3); display:flex; flex-direction:column; justify-content:center; align-items:center;'>
                 <div class='result-deco' style='right:auto; left:18px;'><span class='pulse-emoji'>📵🔔⏳🧠⚠️</span></div>
                 <div style='background: rgba(138,109,59,0.3); padding: 8px 20px; border-radius: 20px; margin-bottom: 12px; display: inline-block;'>
                     <h3 style='color: #8a6d3b; margin: 0; font-size: 24px; font-weight: 700;'>⚠️ MODERATE ADDICTION LEVEL</h3>
@@ -337,11 +280,13 @@ with col_button_center:
             </div>
             """, unsafe_allow_html=True)
 
-           
+            # subtle caution animation if available
+            if os.path.exists("assests/animation.gif"):
+                st.image("assests/animation.gif", width=600)
 
         else:
             st.markdown(f"""
-            <div class='result-banner' style='max-width:1600px; width:100%; min-height:260px; margin:18px auto; background: linear-gradient(135deg, #ff4b2b 0%, #ff0000 35%, #b31217 100%); padding: 30px; border-radius: 18px; text-align: center; box-shadow: 0 18px 40px rgba(0,0,0,0.55); display:flex; flex-direction:column; justify-content:center; align-items:center;'>
+            <div class='result-banner' style='max-width:100%; width:100%; min-height:260px; margin:18px auto; background: linear-gradient(135deg, #ff4b2b 0%, #ff0000 35%, #b31217 100%); padding: 30px; border-radius: 18px; text-align: center; box-shadow: 0 18px 40px rgba(0,0,0,0.55); display:flex; flex-direction:column; justify-content:center; align-items:center;'>
                 <div class='result-deco'><span class='shake-emoji'>🚨📵☠️🚨❗</span></div>
                 <div style='background: rgba(255,255,255,0.3); padding: 8px 20px; border-radius: 20px; margin-bottom: 12px; display: inline-block;'>
                     <h3 style='color: #fff; margin: 0; font-size: 24px; font-weight: 700;'>🚨 HIGH ADDICTION ALERT!</h3>
@@ -359,6 +304,10 @@ with col_button_center:
                 </ul>
             </div>
             """, unsafe_allow_html=True)
+
+            # show a stronger visual hint if a danger image exists
+            if os.path.exists("assests/image.jpg"):
+                st.image("assests/image.jpg", width=700)
 
 # ------------------ Footer ------------------
 st.markdown("""
