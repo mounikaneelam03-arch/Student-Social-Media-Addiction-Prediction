@@ -69,17 +69,6 @@ label {{
         gap: 20px;
 }}
 
-/* Make the input section cleaner and floating */
-[data-testid="column"] {{
-        background: rgba(10, 10, 30, 0.65) !important;
-        backdrop-filter: blur(16px);
-        padding: 22px !important;
-        border-radius: 18px !important;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5) !important;
-        border: 1px solid rgba(255, 255, 255, 0.09);
-        animation: popIn 0.8s ease-out both;
-}}
-
 /* ---------------- ANIMATIONS ---------------- */
 
 @keyframes floatUpDown {{
@@ -155,7 +144,10 @@ label {{
 }}
 
 .result-deco {{
-    position: absolute; top: -18px; right: 18px; z-index: 10;
+    /* No longer absolute, will be centered by the parent flex container */
+    width: 100%;
+    text-align: center;
+    margin-bottom: 12px; /* Adds space below the emojis */
 }}
 
 .result-banner {{ position: relative; }}
@@ -182,17 +174,22 @@ st.markdown("---")
 # ------------------ Input Section ------------------
 st.markdown("<h2 style='color:white; text-align:center; text-shadow:2px 2px black;'>📋 Enter Your Information</h2>", unsafe_allow_html=True)
 
-age = st.slider("🎂 Age", 10, 60, 20)
-gender = st.selectbox("👤 Gender", ["Male", "Female"])
-academic_level = st.selectbox("📚 Academic Level", ["High School", "Undergraduate", "Graduate"])
-country = st.selectbox("🌍 Country", ["Afghanistan", "Albania", "Andorra", "Argentina", "Armenia", "Australia", "Austria", "Azerbaijan", "Bahamas", "Bahrain", "Bangladesh", "Belarus", "Belgium", "Bhutan", "Bolivia", "Bosnia", "Brazil", "Bulgaria", "Canada", "Chile", "China", "Colombia", "Costa Rica", "Croatia", "Cyprus", "Czech Republic", "Denmark", "Ecuador", "Egypt", "Estonia", "Finland", "France", "Georgia", "Germany", "Ghana", "Greece", "Hong Kong", "Hungary", "Iceland", "India", "Indonesia", "Iraq", "Ireland", "Israel", "Italy", "Jamaica", "Japan", "Jordan", "Kazakhstan", "Kenya", "Kosovo", "Kuwait", "Kyrgyzstan", "Latvia", "Lebanon", "Liechtenstein", "Lithuania", "Luxembourg", "Malaysia", "Maldives", "Malta", "Mexico", "Moldova", "Monaco", "Montenegro", "Morocco", "Nepal", "Netherlands", "New Zealand", "Nigeria", "North Macedonia", "Norway", "Oman", "Pakistan", "Panama", "Paraguay", "Peru", "Philippines", "Poland", "Portugal", "Qatar", "Romania", "Russia", "San Marino", "Serbia", "Singapore", "Slovakia", "Slovenia", "South Africa", "South Korea", "Spain", "Sri Lanka", "Sweden", "Switzerland", "Syria", "Taiwan", "Tajikistan", "Thailand", "Trinidad", "Turkey", "UAE", "UK", "USA", "Ukraine", "Uruguay", "Uzbekistan", "Vatican City", "Venezuela", "Vietnam", "Yemen"])
-daily_usage = st.slider("📱 Daily Usage Hours", 0.0, 12.0, 4.0)
-platform = st.selectbox("🌐 Most Used Platform", ["Facebook", "Instagram", "KakaoTalk", "LINE", "LinkedIn", "Snapchat", "TikTok", "Twitter", "VKontakte", "WeChat", "WhatsApp", "YouTube"])
-academic_impact = st.selectbox("📊 Affects Academic Performance", ["No", "Yes"])
-sleep_hours = st.slider("😴 Sleep Hours per Night", 3, 10, 7)
-mental_health = st.slider("🧠 Mental Health Score (1–10)", 1, 10, 5)
-relationship = st.selectbox("💑 Relationship Status", ["Single", "In Relationship", "Complicated"])
-conflicts = st.slider("⚠️ Conflicts Over Social Media (1–5)", 1, 5, 2)
+col1, col2 = st.columns(2)
+
+with col1:
+    age = st.slider("🎂 Age", 10, 60, 20, key="age")
+    gender = st.selectbox("👤 Gender", ["Male", "Female"], key="gender")
+    academic_level = st.selectbox("📚 Academic Level", ["High School", "Undergraduate", "Graduate"], key="academic_level")
+    country = st.selectbox("🌍 Country", ["Afghanistan", "Albania", "Andorra", "Argentina", "Armenia", "Australia", "Austria", "Azerbaijan", "Bahamas", "Bahrain", "Bangladesh", "Belarus", "Belgium", "Bhutan", "Bolivia", "Bosnia", "Brazil", "Bulgaria", "Canada", "Chile", "China", "Colombia", "Costa Rica", "Croatia", "Cyprus", "Czech Republic", "Denmark", "Ecuador", "Egypt", "Estonia", "Finland", "France", "Georgia", "Germany", "Ghana", "Greece", "Hong Kong", "Hungary", "Iceland", "India", "Indonesia", "Iraq", "Ireland", "Israel", "Italy", "Jamaica", "Japan", "Jordan", "Kazakhstan", "Kenya", "Kosovo", "Kuwait", "Kyrgyzstan", "Latvia", "Lebanon", "Liechtenstein", "Lithuania", "Luxembourg", "Malaysia", "Maldives", "Malta", "Mexico", "Moldova", "Monaco", "Montenegro", "Morocco", "Nepal", "Netherlands", "New Zealand", "Nigeria", "North Macedonia", "Norway", "Oman", "Pakistan", "Panama", "Paraguay", "Peru", "Philippines", "Poland", "Portugal", "Qatar", "Romania", "Russia", "San Marino", "Serbia", "Singapore", "Slovakia", "Slovenia", "South Africa", "South Korea", "Spain", "Sri Lanka", "Sweden", "Switzerland", "Syria", "Taiwan", "Tajikistan", "Thailand", "Trinidad", "Turkey", "UAE", "UK", "USA", "Ukraine", "Uruguay", "Uzbekistan", "Vatican City", "Venezuela", "Vietnam", "Yemen"], key="country")
+    daily_usage = st.slider("📱 Daily Usage Hours", 0.0, 12.0, 4.0, key="daily_usage")
+    platform = st.selectbox("🌐 Most Used Platform", ["Facebook", "Instagram", "KakaoTalk", "LINE", "LinkedIn", "Snapchat", "TikTok", "Twitter", "VKontakte", "WeChat", "WhatsApp", "YouTube"], key="platform")
+
+with col2:
+    academic_impact = st.selectbox("📊 Affects Academic Performance", ["No", "Yes"], key="academic_impact")
+    sleep_hours = st.slider("😴 Sleep Hours per Night", 3, 10, 7, key="sleep_hours")
+    mental_health = st.slider("🧠 Mental Health Score (1–10)", 1, 10, 5, key="mental_health")
+    relationship = st.selectbox("💑 Relationship Status", ["Single", "In Relationship", "Complicated"], key="relationship")
+    conflicts = st.slider("⚠️ Conflicts Over Social Media (1–5)", 1, 5, 2, key="conflicts")
 
 # Encoding using LabelEncoder logic (alphabetical order)
 gender_encoded = 0 if gender == "Female" else 1
@@ -218,8 +215,29 @@ relationship_encoded = relationship_map[relationship]
 
 # ------------------ Prediction Button ------------------
 col_button_left, col_button_center, col_button_right = st.columns([1, 1, 1])
+
+def reset_inputs():
+    st.session_state.age = 20
+    st.session_state.gender = "Male"
+    st.session_state.academic_level = "High School"
+    st.session_state.country = "Afghanistan"
+    st.session_state.daily_usage = 4.0
+    st.session_state.platform = "Facebook"
+    st.session_state.academic_impact = "No"
+    st.session_state.sleep_hours = 7
+    st.session_state.mental_health = 5
+    st.session_state.relationship = "Single"
+    st.session_state.conflicts = 2
+
+with col_button_left:
+    st.button("🔄 Reset", on_click=reset_inputs, use_container_width=True)
+
 with col_button_center:
-    if st.button("🔍 Predict Addiction Level", use_container_width=True):
+    predict_btn = st.button("🔍 Predict Addiction Level", use_container_width=True)
+
+if predict_btn:
+    with st.spinner("Analyzing your habits..."):
+        time.sleep(1.2)  # Small delay to ensure the spinner is visible
         input_data = np.array([[age, gender_encoded, academic_level_encoded, country_encoded,
                                  daily_usage, platform_encoded, academic_impact_encoded,
                                  sleep_hours, mental_health, relationship_encoded, conflicts]])
@@ -227,87 +245,72 @@ with col_button_center:
         input_scaled = scaler.transform(input_data)
         prediction = model.predict(input_scaled)[0]
 
-        st.markdown("---")
+    st.markdown("---")
 
-        # ------------------ RESULT DISPLAY ------------------
-        # Display result directly without empty side columns
-        if prediction < 4:
-            # Celebration: balloons and congratulatory banner
-            st.markdown(f"""
-            <div class='result-banner' style='max-width:100%; width:100%; min-height:260px; margin:18px auto; background: linear-gradient(135deg, #a1c4fd 0%, #c2e9fb 50%, #d4a5ff 100%); padding: 32px; border-radius: 18px; text-align: center; box-shadow: 0 18px 36px rgba(0,0,0,0.45); display:flex; flex-direction:column; justify-content:center; align-items:center;'>
-                <div class='result-deco'><span class='float-emoji'>🌱✅😊🎈🎉       </span></div>
-                <div style='background: rgba(255,255,255,0.25); padding: 8px 20px; border-radius: 20px; margin-bottom: 12px; display: inline-block;'>
-                    <h3 style='color: #green; margin: 0; font-size: 24px; font-weight: 700;'>✅ LOW ADDICTION LEVEL</h3>
-                </div>
-                <h1 style='color: #fff; margin: 0; font-size: 48px; font-weight: 800;'>🎉 Congratulations!</h1>
-                <p style='color: #f0f5ff; margin: 8px 0 12px 0; font-size: 18px;'>You have a LOW addiction level</p>
-                <h2 style='color: white; margin: 6px 0 0 0; font-size: 56px; font-weight: 900;'>{prediction:.2f}</h2>
-                <p style='color: #e0e0e0; margin: 6px 0 6px 0; font-size: 14px;'>Addiction Score</p>
-                <ul style='text-align:left; color:#f0f5ff; margin:12px 0 0 0; padding-left:22px; font-size:15px;'>
-                    <li>🎯📚 Focus on your studies and personal goals</li>
-                    <li>🛌 Prioritize sleep — aim for consistent hours</li>
-                    <li>⏱️ Set small daily screen-time limits</li>
-                    <li>💬 Keep social time balanced with offline activities</li>
-                </ul>
+    # ------------------ RESULT DISPLAY ------------------
+    # Display result directly without empty side columns
+    if prediction < 4:
+        # Celebration: balloons and congratulatory banner
+        st.markdown(f"""
+        <div class='result-banner' style='max-width:100%; width:100%; min-height:260px; margin:18px auto; background: linear-gradient(135deg, #a1c4fd 0%, #c2e9fb 50%, #d4a5ff 100%); padding: 32px; border-radius: 18px; text-align: center; box-shadow: 0 18px 36px rgba(0,0,0,0.45); display:flex; flex-direction:column; justify-content:center; align-items:center;'>
+            <div class='result-deco'><span class='float-emoji'>🎉🌱✅😊🎈🎉🌱</span></div>
+            <div style='background: rgba(255,255,255,0.25); padding: 8px 20px; border-radius: 20px; margin-bottom: 12px; display: inline-block;'>
+                <h3 style='color: #green; margin: 0; font-size: 24px; font-weight: 700;'>✅ LOW ADDICTION LEVEL</h3>
             </div>
-            """, unsafe_allow_html=True)
+            <h1 style='color: #fff; margin: 0; font-size: 48px; font-weight: 800;'>🎉 Congratulations!</h1>
+            <p style='color: #f0f5ff; margin: 8px 0 12px 0; font-size: 18px;'>You have a LOW addiction level</p>
+            <h2 style='color: white; margin: 6px 0 0 0; font-size: 56px; font-weight: 900;'>{prediction:.2f}</h2>
+            <p style='color: #e0e0e0; margin: 6px 0 6px 0; font-size: 14px;'>Addiction Score</p>
+            <ul style='text-align:left; color:#f0f5ff; margin:12px 0 0 0; padding-left:22px; font-size:15px;'>
+                <li>🎯📚 Focus on your studies and personal goals</li>
+                <li>🛌 Prioritize sleep — aim for consistent hours</li>
+                <li>⏱️ Set small daily screen-time limits</li>
+                <li>💬 Keep social time balanced with offline activities</li>
+            </ul>
+        </div>
+        """, unsafe_allow_html=True)
+        time.sleep(0.8)
+        st.balloons()
 
-            # Optional celebration animation if available
-            if os.path.exists("assests/animation.gif"):
-                st.image("assests/animation.gif", width=700)
-
-            time.sleep(0.8)
-            st.balloons()
-
-        elif prediction < 7:
-            st.markdown(f"""
-            <div class='result-banner' style='max-width:100%; width:100%; min-height:260px; margin:18px auto; background: linear-gradient(135deg, #fff1eb 0%, #ace0f9 50%, #fbc2eb 100%); padding: 30px; border-radius: 18px; text-align: center; box-shadow: 0 16px 32px rgba(0,0,0,0.3); display:flex; flex-direction:column; justify-content:center; align-items:center;'>
-                <div class='result-deco' style='right:auto; left:18px;'><span class='pulse-emoji'>📵🔔⏳🧠⚠️</span></div>
-                <div style='background: rgba(138,109,59,0.3); padding: 8px 20px; border-radius: 20px; margin-bottom: 12px; display: inline-block;'>
-                    <h3 style='color: #8a6d3b; margin: 0; font-size: 24px; font-weight: 700;'>⚠️ MODERATE ADDICTION LEVEL</h3>
-                </div>
-                <h1 style='color: #8a6d3b; margin: 0; font-size: 42px; font-weight: 700;'>⚠️ Keep an Eye on Usage</h1>
-                <p style='color: #6b4f2f; margin: 8px 0 12px 0; font-size: 16px;'>Moderate addiction level — consider reducing screen time</p>
-                <h2 style='color: #yellow; margin: 6px 0 0 0; font-size: 48px; font-weight: 800;'>{prediction:.2f}</h2>
-                <p style='color: #6b4f2f; margin: 6px 0 0 0; font-size: 14px;'>Addiction Score</p>
-                <ul style='text-align:left; color:#6b4f2f; margin:12px 0 0 0; padding-left:22px; font-size:15px;'>
-                    <li>📵 Try scheduled no-phone periods (study/meal times)</li>
-                    <li>⏲️ Use app timers or screen-time controls</li>
-                    <li>🏃 Add short physical breaks and hobbies</li>
-                    <li>📝 Track usage for a week to spot patterns</li>
-                </ul>
+    elif prediction < 7:
+        st.markdown(f"""
+        <div class='result-banner' style='max-width:100%; width:100%; min-height:260px; margin:18px auto; background: linear-gradient(135deg, #fff1eb 0%, #ace0f9 50%, #fbc2eb 100%); padding: 30px; border-radius: 18px; text-align: center; box-shadow: 0 16px 32px rgba(0,0,0,0.3); display:flex; flex-direction:column; justify-content:center; align-items:center;'>
+            <div class='result-deco'><span class='pulse-emoji'>📵🔔⏳🧠⚠️</span></div>
+            <div style='background: rgba(138,109,59,0.3); padding: 8px 20px; border-radius: 20px; margin-bottom: 12px; display: inline-block;'>
+                <h3 style='color: #8a6d3b; margin: 0; font-size: 24px; font-weight: 700;'>⚠️ MODERATE ADDICTION LEVEL</h3>
             </div>
-            """, unsafe_allow_html=True)
-
-            # subtle caution animation if available
-            if os.path.exists("assests/animation.gif"):
-                st.image("assests/animation.gif", width=600)
-
-        else:
-            st.markdown(f"""
-            <div class='result-banner' style='max-width:100%; width:100%; min-height:260px; margin:18px auto; background: linear-gradient(135deg, #ff4b2b 0%, #ff0000 35%, #b31217 100%); padding: 30px; border-radius: 18px; text-align: center; box-shadow: 0 18px 40px rgba(0,0,0,0.55); display:flex; flex-direction:column; justify-content:center; align-items:center;'>
-                <div class='result-deco'><span class='shake-emoji'>🚨📵☠️🚨❗</span></div>
-                <div style='background: rgba(255,255,255,0.3); padding: 8px 20px; border-radius: 20px; margin-bottom: 12px; display: inline-block;'>
-                    <h3 style='color: #fff; margin: 0; font-size: 24px; font-weight: 700;'>🚨 HIGH ADDICTION ALERT!</h3>
-                </div>
-                <h1 style='color: #fff; margin: 0; font-size: 44px; font-weight: 800;'>🚨 High Addiction — Take Action</h1>
-                <p style='color: #fdecea; margin: 8px 0 12px 0; font-size: 16px;'>This indicates a high addiction score — consider seeking support and setting strict limits.</p>
-                <h2 style='color: #fff; margin: 6px 0 0 0; font-size: 48px; font-weight: 800;'>{prediction:.2f}</h2>
-                <p style='color: #ffe6e0; margin: 6px 0 0 0; font-size: 14px;'>Addiction Score</p>
-                <ul style='text-align:left; color:#fff; margin:12px 0 0 0; padding-left:22px; font-size:15px;'>
-                    <li>📞 Consider speaking with a counselor or healthcare professional</li>
-                    <li>🔒 Use app blockers and strict screen-time limits</li>
-                    <li>🧑‍⚕️ Spend more time with family and friends</li>
-                    <li>📆 Create a gradual reduction plan with clear goals</li>
-                    <li>📵 Avoid using your phone before sleeping</li>
-                </ul>
+            <h1 style='color: #8a6d3b; margin: 0; font-size: 42px; font-weight: 700;'>⚠️ Keep an Eye on Usage</h1>
+            <p style='color: #6b4f2f; margin: 8px 0 12px 0; font-size: 16px;'>Moderate addiction level — consider reducing screen time</p>
+            <h2 style='color: #yellow; margin: 6px 0 0 0; font-size: 48px; font-weight: 800;'>{prediction:.2f}</h2>
+            <p style='color: #6b4f2f; margin: 6px 0 0 0; font-size: 14px;'>Addiction Score</p>
+            <ul style='text-align:left; color:#6b4f2f; margin:12px 0 0 0; padding-left:22px; font-size:15px;'>
+                <li>📵 Try scheduled no-phone periods (study/meal times)</li>
+                <li>⏲️ Use app timers or screen-time controls</li>
+                <li>🏃 Add short physical breaks and hobbies</li>
+                <li>📝 Track usage for a week to spot patterns</li>
+            </ul>
+        </div>
+        """, unsafe_allow_html=True)
+    else:
+        st.markdown(f"""
+        <div class='result-banner' style='max-width:100%; width:100%; min-height:260px; margin:18px auto; background: linear-gradient(135deg, #ff4b2b 0%, #ff0000 35%, #b31217 100%); padding: 30px; border-radius: 18px; text-align: center; box-shadow: 0 18px 40px rgba(0,0,0,0.55); display:flex; flex-direction:column; justify-content:center; align-items:center;'>
+            <div class='result-deco'><span class='shake-emoji'>🚨📵☠️🚨❗</span></div>
+            <div style='background: rgba(255,255,255,0.3); padding: 8px 20px; border-radius: 20px; margin-bottom: 12px; display: inline-block;'>
+                <h3 style='color: #fff; margin: 0; font-size: 24px; font-weight: 700;'>🚨 HIGH ADDICTION ALERT!</h3>
             </div>
-            """, unsafe_allow_html=True)
-
-            # show a stronger visual hint if a danger image exists
-            if os.path.exists("assests/image.jpg"):
-                st.image("assests/image.jpg", width=700)
-
+            <h1 style='color: #fff; margin: 0; font-size: 44px; font-weight: 800;'>🚨 High Addiction — Take Action</h1>
+            <p style='color: #fdecea; margin: 8px 0 12px 0; font-size: 16px;'>This indicates a high addiction score — consider seeking support and setting strict limits.</p>
+            <h2 style='color: #fff; margin: 6px 0 0 0; font-size: 48px; font-weight: 800;'>{prediction:.2f}</h2>
+            <p style='color: #ffe6e0; margin: 6px 0 0 0; font-size: 14px;'>Addiction Score</p>
+            <ul style='text-align:left; color:#fff; margin:12px 0 0 0; padding-left:22px; font-size:15px;'>
+                <li>📞 Consider speaking with a counselor or healthcare professional</li>
+                <li>🔒 Use app blockers and strict screen-time limits</li>
+                <li>🧑‍⚕️ Spend more time with family and friends</li>
+                <li>📆 Create a gradual reduction plan with clear goals</li>
+                <li>📵 Avoid using your phone before sleeping</li>
+            </ul>
+        </div>
+        """, unsafe_allow_html=True)
 # ------------------ Footer ------------------
 st.markdown("""
 <hr>
