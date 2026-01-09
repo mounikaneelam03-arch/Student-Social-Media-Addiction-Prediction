@@ -159,13 +159,9 @@ label {{
 
 .result-banner {{ position: relative; }}
 
-/* Soften the default Streamlit alert boxes (st.success, st.warning, st.error) */
+/* Hide the default Streamlit alert boxes completely to avoid empty boxes */
 .stAlert {{
-    border-radius: 14px !important;
-    padding: 0.6rem 1rem !important;
-    margin-top: 0.5rem !important;
-    background: rgba(0, 0, 0, 0.45) !important;
-    backdrop-filter: blur(8px);
+    display: none !important;
 }}
 
 </style>
@@ -235,7 +231,6 @@ with col_button_center:
         # ------------------ RESULT DISPLAY ------------------
         # Display result directly without empty side columns
         if prediction < 4:
-            st.success("✅ LOW ADDICTION LEVEL")
             # Celebration: balloons and congratulatory banner
             try:
                 st.balloons()
@@ -244,7 +239,10 @@ with col_button_center:
 
             st.markdown(f"""
             <div class='result-banner' style='max-width:100%; width:100%; min-height:260px; margin:18px auto; background: linear-gradient(135deg, #a1c4fd 0%, #c2e9fb 50%, #d4a5ff 100%); padding: 32px; border-radius: 18px; text-align: center; box-shadow: 0 18px 36px rgba(0,0,0,0.45); display:flex; flex-direction:column; justify-content:center; align-items:center;'>
-                <div class='result-deco'><span class='float-emoji'>🌱✅😊🎈🎉</span></div>
+                <div class='result-deco'><span class='float-emoji'>🌱✅😊🎈🎉       </span></div>
+                <div style='background: rgba(255,255,255,0.25); padding: 8px 20px; border-radius: 20px; margin-bottom: 12px; display: inline-block;'>
+                    <h3 style='color: #green; margin: 0; font-size: 24px; font-weight: 700;'>✅ LOW ADDICTION LEVEL</h3>
+                </div>
                 <h1 style='color: #fff; margin: 0; font-size: 48px; font-weight: 800;'>🎉 Congratulations!</h1>
                 <p style='color: #f0f5ff; margin: 8px 0 12px 0; font-size: 18px;'>You have a LOW addiction level</p>
                 <h2 style='color: white; margin: 6px 0 0 0; font-size: 56px; font-weight: 900;'>{prediction:.2f}</h2>
@@ -263,13 +261,15 @@ with col_button_center:
                 st.image("assests/animation.gif", width=700)
 
         elif prediction < 7:
-            st.warning("⚠️ MODERATE ADDICTION LEVEL")
             st.markdown(f"""
             <div class='result-banner' style='max-width:100%; width:100%; min-height:260px; margin:18px auto; background: linear-gradient(135deg, #fff1eb 0%, #ace0f9 50%, #fbc2eb 100%); padding: 30px; border-radius: 18px; text-align: center; box-shadow: 0 16px 32px rgba(0,0,0,0.3); display:flex; flex-direction:column; justify-content:center; align-items:center;'>
                 <div class='result-deco' style='right:auto; left:18px;'><span class='pulse-emoji'>📵🔔⏳🧠⚠️</span></div>
+                <div style='background: rgba(138,109,59,0.3); padding: 8px 20px; border-radius: 20px; margin-bottom: 12px; display: inline-block;'>
+                    <h3 style='color: #8a6d3b; margin: 0; font-size: 24px; font-weight: 700;'>⚠️ MODERATE ADDICTION LEVEL</h3>
+                </div>
                 <h1 style='color: #8a6d3b; margin: 0; font-size: 42px; font-weight: 700;'>⚠️ Keep an Eye on Usage</h1>
                 <p style='color: #6b4f2f; margin: 8px 0 12px 0; font-size: 16px;'>Moderate addiction level — consider reducing screen time</p>
-                <h2 style='color: #5a3e1b; margin: 6px 0 0 0; font-size: 48px; font-weight: 800;'>{prediction:.2f}</h2>
+                <h2 style='color: #yellow; margin: 6px 0 0 0; font-size: 48px; font-weight: 800;'>{prediction:.2f}</h2>
                 <p style='color: #6b4f2f; margin: 6px 0 0 0; font-size: 14px;'>Addiction Score</p>
                 <ul style='text-align:left; color:#6b4f2f; margin:12px 0 0 0; padding-left:22px; font-size:15px;'>
                     <li>📵 Try scheduled no-phone periods (study/meal times)</li>
@@ -285,10 +285,12 @@ with col_button_center:
                 st.image("assests/animation.gif", width=600)
 
         else:
-            st.error("🚨 HIGH ADDICTION ALERT!")
             st.markdown(f"""
             <div class='result-banner' style='max-width:100%; width:100%; min-height:260px; margin:18px auto; background: linear-gradient(135deg, #ff4b2b 0%, #ff0000 35%, #b31217 100%); padding: 30px; border-radius: 18px; text-align: center; box-shadow: 0 18px 40px rgba(0,0,0,0.55); display:flex; flex-direction:column; justify-content:center; align-items:center;'>
                 <div class='result-deco'><span class='shake-emoji'>🚨📵☠️🚨❗</span></div>
+                <div style='background: rgba(255,255,255,0.3); padding: 8px 20px; border-radius: 20px; margin-bottom: 12px; display: inline-block;'>
+                    <h3 style='color: #fff; margin: 0; font-size: 24px; font-weight: 700;'>🚨 HIGH ADDICTION ALERT!</h3>
+                </div>
                 <h1 style='color: #fff; margin: 0; font-size: 44px; font-weight: 800;'>🚨 High Addiction — Take Action</h1>
                 <p style='color: #fdecea; margin: 8px 0 12px 0; font-size: 16px;'>This indicates a high addiction score — consider seeking support and setting strict limits.</p>
                 <h2 style='color: #fff; margin: 6px 0 0 0; font-size: 48px; font-weight: 800;'>{prediction:.2f}</h2>
